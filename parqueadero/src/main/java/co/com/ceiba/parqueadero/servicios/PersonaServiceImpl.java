@@ -9,8 +9,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import co.com.ceiba.parqueadero.dominio.Persona;
 import co.com.ceiba.parqueadero.dto.PersonaDto;
@@ -18,13 +16,14 @@ import co.com.ceiba.parqueadero.repositorios.PersonaRepository;
 
 
 @Service
-@Transactional(
-        propagation = Propagation.SUPPORTS,
-        readOnly = true)
 public class PersonaServiceImpl implements PersonaService {
 
-	@Autowired
     private PersonaRepository personaRepository;
+
+    @Autowired
+    public PersonaServiceImpl(PersonaRepository personaRepository) {
+        this.personaRepository = personaRepository;
+    }
 
     @Override
     public void delete(Long id) {
@@ -40,15 +39,10 @@ public class PersonaServiceImpl implements PersonaService {
 
 	@Override
 	public List<PersonaDto> listAll() {
-		List<Persona> documentos = listarTodos(); 
+		List<Persona> documentos = new ArrayList<>();
+		personaRepository.findAll().forEach(documentos::add); 
         return convertListaDto(documentos);
 
-	}
-
-	private List<Persona> listarTodos() {
-		List<Persona> documentos = new ArrayList<>();
-		personaRepository.findAll().forEach(documentos::add);
-		return documentos;
 	}
 
 	@Override

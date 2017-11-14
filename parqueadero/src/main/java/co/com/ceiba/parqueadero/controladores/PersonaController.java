@@ -16,13 +16,12 @@ import co.com.ceiba.parqueadero.servicios.PersonaService;
 @RequestMapping("/persona")
 public class PersonaController { 
 	
-	@Autowired( required = true )
     private PersonaService personaService;
 
-//    @Autowired
-//    public void setProductService(PersonaService personaService) {
-//        this.personaService = personaService;
-//    }
+    @Autowired
+    public void setProductService(PersonaService personaService) {
+        this.personaService = personaService;
+    }
     
     @RequestMapping(value = "/guardar", method = RequestMethod.POST)
     public String guardar(@RequestBody PersonaDto persona){
